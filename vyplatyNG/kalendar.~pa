@@ -4,17 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Grids, DBGrids, Db, StdCtrls;
+  Grids, DBGrids, Db, StdCtrls, ComCtrls;
 
 type
   TForm1 = class(TForm)
-    DBGrid1: TDBGrid;
+    kalendarDBGrid: TDBGrid;
     Button1: TButton;
-    FromYearEdit: TEdit;
     FromLabel: TLabel;
     ToLabel: TLabel;
-    ToYearEdit: TEdit;
     Memo1: TMemo;
+    toDateTimePicker: TDateTimePicker;
+    fromDateTimePicker: TDateTimePicker;
   private
     { Private declarations }
   public
