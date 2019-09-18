@@ -31,17 +31,44 @@ uses dtgDM;
 
 {$R *.DFM}
 
+// Druh Dne v kalendari
+// ddDovolena = 1;
+// ddPlacenySvatek = 2;
+// ddPracovniDen = 3;
+// ddVikend = 4;
+function getDruhDne(den: TDateTime): Integer;
+ var
+   i, retVal : Integer;
+ begin
+   i := DayOfWeek(den);
+   Case i of
+     2 : retVal := 3; //Po
+     3 : retVal := 3; //Ut
+     4 : retVal := 3; //St
+     5 : retVal := 3; //Ct
+     6 : retVal := 3; //Pa
+     7 : retVal := 4; //So
+     1 : retVal := 4; //Ne
+   end;
+   Result := retVal;
+ end;
+
+function getTyden(den: TDateTime): Integer;
+ var
+   i : Integer;
+ begin
+   i := DayOfWeek(den);
+   Result := i * i;
+ end;
+
 procedure TForm1.AddClick(Sender: TObject);
-var
+ var
   fromDate,toDate,aDate : TDate;
   numOfDays,i     : Integer;
-begin
+ begin
    toDate := toDateTimePicker.Date;
    fromDate := fromDateTimePicker.Date;
    numOfDays := Trunc(toDate - fromDate);
-   //fromDay := LongDayNames[DayOfWeek(fromDate)];
-   //toDay := LongDayNames[DayOfWeek(toDate)];
-   //ShowMessage(DateToStr(toDate)+ ' is ' + toDay + ' diff is ' + IntToStr(period));
    for i := 0 to numOfDays do
       begin
          with dtgDataModule.kalendarTbl do
@@ -50,11 +77,11 @@ begin
               Insert;
               FieldByName('Datum').AsDateTime := aDate;
               FieldByName('Den').AsInteger := DayOfWeek(aDate);
-              FieldByName('DruhDne').AsInteger := DayOfWeek(aDate) + 1;
-              FieldByName('Tyden').AsInteger := DayOfWeek(aDate) + 2;
+              FieldByName('DruhDne').AsInteger := getDruhDne(aDate);
+              FieldByName('Tyden').AsInteger := getTyden(aDate);
               Post;
            end;
       end;
-end;
+ end;
 
 end.
