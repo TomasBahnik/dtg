@@ -24,6 +24,7 @@ type
 
 var
   Form1: TForm1;
+  week: Word = 0;
 
 implementation
 
@@ -55,10 +56,16 @@ function getDruhDne(den: TDateTime): Integer;
 
 function getTyden(den: TDateTime): Integer;
  var
-   i : Integer;
- begin
-   i := DayOfWeek(den);
-   Result := i * i;
+  lastDayOfYear : TDateTime;
+  myYear, myMonth, myDay : Word;
+  numOfDays  : Integer;
+  begin
+   DecodeDate(den, myYear, myMonth, myDay);
+   lastDayOfYear := EncodeDate(myYear,12,31);
+   numOfDays := Trunc(lastDayOfYear - den);
+   if DayOfWeek(den) = 2
+   then week := week + 1;
+   Result := week;
  end;
 
 procedure TForm1.AddClick(Sender: TObject);
@@ -78,7 +85,7 @@ procedure TForm1.AddClick(Sender: TObject);
               FieldByName('Datum').AsDateTime := aDate;
               FieldByName('Den').AsInteger := DayOfWeek(aDate);
               FieldByName('DruhDne').AsInteger := getDruhDne(aDate);
-              FieldByName('Tyden').AsInteger := DayOfWeek(aDate) + 2;
+              FieldByName('Tyden').AsInteger := getTyden(aDate);
               Post;
            end;
       end;
