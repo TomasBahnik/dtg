@@ -59,16 +59,15 @@ function getTyden(den: TDateTime): Integer;
   lastDayOfYear : TDateTime;
   myYear, myMonth, myDay : Word;
   daysToEndOfYear  : Integer;
-  startWeekFromOne Boolean;
   begin
    DecodeDate(den, myYear, myMonth, myDay);
    lastDayOfYear := EncodeDate(myYear,12,31);
    daysToEndOfYear := Trunc(lastDayOfYear - den);
    //end of year is Ne, Po or Ut
-   if lastDayOfYear < 4 then startWeekFromOne := true else startWeekFromOne := false;
    //Po
    if DayOfWeek(den) = 2 then week := week + 1;
-   if daysToEndOfYear = 0 and startWeekFromOne then week := 1 else week := 0;
+   if (daysToEndOfYear = 0) and (DayOfWeek(lastDayOfYear) < 4)
+   then week := 1 else week := 0;
    Result := week;
  end;
 
