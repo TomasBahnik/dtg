@@ -24,7 +24,7 @@ type
 
 var
   Form1: TForm1;
-  week: Word = 0; //global variable can be initilized
+  week: Word = 1; //global variable can be initilized
 
 implementation
 
@@ -66,8 +66,7 @@ function getTyden(den: TDateTime): Integer;
    //end of year is Ne, Po or Ut
    //Po
    if DayOfWeek(den) = 2 then week := week + 1;
-   if (daysToEndOfYear = 0) and (DayOfWeek(lastDayOfYear) < 4)
-   then week := 1 else week := 0;
+   if (daysToEndOfYear = 0) then week := 1;
    Result := week;
  end;
 
