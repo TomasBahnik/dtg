@@ -53,20 +53,21 @@ function getDruhDne(den: TDateTime): Integer;
    end;
    Result := retVal;
  end;
-
+// assumes that generation starts at the begining of year i.e. 1.1.YYYY
 function getTyden(den: TDateTime): Integer;
  var
   lastDayOfYear : TDateTime;
   myYear, myMonth, myDay : Word;
-  daysToEndOfYear  : Integer;
+  daysAfterEndOfYear : Integer;
   begin
    DecodeDate(den, myYear, myMonth, myDay);
    lastDayOfYear := EncodeDate(myYear,12,31);
-   daysToEndOfYear := Trunc(lastDayOfYear - den);
+   daysAfterEndOfYear := Trunc(den - lastDayOfYear);
    //end of year is Ne, Po or Ut
    //Po
    if DayOfWeek(den) = 2 then week := week + 1;
-   if (daysToEndOfYear = 0) then week := 1;
+   //next year but wait with change until Monday
+   if (daysAfterEndOfYear > 1) and (DayOfWeek(den) = 2) then week := 1;
    Result := week;
  end;
 
