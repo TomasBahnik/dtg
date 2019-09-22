@@ -24,8 +24,9 @@ type
 
 var
   Form1: TForm1;
-  week: Word = 1; //global variable can be initilized
-
+  week: Word = 0; //global variable can be initilized
+  lastYear : Word = 1;
+  lastWeek : Word = 53;
 implementation
 
 uses dtgDM;
@@ -56,18 +57,15 @@ function getDruhDne(den: TDateTime): Integer;
 // assumes that generation starts at the begining of year i.e. 1.1.YYYY
 function getTyden(den: TDateTime): Integer;
  var
-  lastDayOfYear : TDateTime;
   myYear, myMonth, myDay : Word;
-  daysAfterEndOfYear : Integer;
   begin
    DecodeDate(den, myYear, myMonth, myDay);
-   lastDayOfYear := EncodeDate(myYear,12,31);
-   daysAfterEndOfYear := Trunc(den - lastDayOfYear);
-   //end of year is Ne, Po or Ut
-   //Po
+   //if lastYear = 0 then lastYear := myYear; // start from begining of yaer
+   //if (myYear = lastYear + 1) and (DayOfWeek(den) > 4) or (DayOfWeek(den) = 1)
+   //then lastWeek := 53
+   //else lastWeek := 52;
    if DayOfWeek(den) = 2 then week := week + 1;
-   //next year but wait with change until Monday
-   if (daysAfterEndOfYear > 1) and (DayOfWeek(den) = 2) then week := 1;
+   if (week = lastWeek) and (DayOfWeek(den) = 2) then week := 1;
    Result := week;
  end;
 
