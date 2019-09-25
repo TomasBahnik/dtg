@@ -76,7 +76,7 @@ begin
       end else
       begin
         //new year
-        compareWithYear = day.getYear();
+        compareWithYear = myYear;
         newYear = EncodeDate(compareWithYear,1,1);
         isNewYearAfterThu = afterThu(newYear);
         if (NOT afterThu(day)) OR (dayOfWeek == DayOfWeek.MONDAY)) then week = 1;
@@ -86,18 +86,25 @@ end;
 
 function afterThu(day : TDateTime) : Boolean
    begin
-      Result := (DayOfWeek(den)=5) OR (DayOfWeek(den)=6) OR (DayOfWeek(den)=7) OR (DayOfWeek(den)=1);
+      Result := (DayOfWeek(day)=5) OR (DayOfWeek(day)=6) OR (DayOfWeek(day)=7) OR (DayOfWeek(day)=1);
    end;
 
 procedure TForm1.AddClick(Sender: TObject);
  var
   fromDate,toDate,aDate : TDate;
   numOfDays,i     : Integer;
+  myYear, myMonth, myDay : Word;
+  newYear : TDateTime;
  begin
    toDate := toDateTimePicker.Date;
    fromDate := fromDateTimePicker.Date;
    numOfDays := Trunc(toDate - fromDate);
-   for i := 0 to numOfDays do
+   DecodeDate(fromDate, myYear, myMonth, myDay);
+   compareWithYear = myYear;
+   newYear = EncodeDate(compareWithYear,1,1);
+   isNewYearAfterThu = afterThu(newYear);
+   week = startWeek;
+ for i := 0 to numOfDays do
       begin
          with dtgDataModule.kalendarTbl do
            begin
