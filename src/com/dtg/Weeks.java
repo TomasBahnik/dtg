@@ -6,11 +6,12 @@ import java.time.temporal.ChronoUnit;
 
 public class Weeks {
 
+    private static final int STD_NUM_OF_WEEKS = 52;
     private int compareWithYear = 0;
     private int week = 1;
-    private int startWeek = 53;
+    private int startWeek = 1;
     private static LocalDate startDate = LocalDate.of(2020, 1, 1);
-    private static LocalDate endDate = LocalDate.of(2020, 1, 9);
+    private static LocalDate endDate = LocalDate.of(2022, 1, 4);
 
 
     private int getWeekOfDay(LocalDate day) {
@@ -19,22 +20,18 @@ public class Weeks {
         if (actualYear == compareWithYear) {
             if (dayOfWeek == DayOfWeek.MONDAY) {
                 System.out.println(" --------------------------------------- ");
-                week = week + 1;
+                week = week >= STD_NUM_OF_WEEKS ? 1 : week + 1;
                 return week;
             } else
                 return week;
         } else {
             //new year
-            if (afterThu(day)) {
-                return week;
-            } else {
-                compareWithYear = day.getYear();
-                if (dayOfWeek == DayOfWeek.MONDAY) {
-                    System.out.println(" --------------------------------------- ");
-                    week = 1;
-                }
-                return week;
+            compareWithYear = day.getYear();
+            if (!afterThu(day) || dayOfWeek == DayOfWeek.MONDAY) {
+                System.out.println(" *** new year **** first week *****");
+                week = 1;
             }
+            return week;
         }
     }
 
@@ -47,6 +44,7 @@ public class Weeks {
     public static void main(String[] args) {
         Weeks weeks = new Weeks();
         weeks.compareWithYear = startDate.getYear();
+        weeks.week = weeks.startWeek;
         long days = ChronoUnit.DAYS.between(startDate, endDate);
         //int period = Period.between(startDate, endDate).
         for (int i = 0; i < days; i++) {
