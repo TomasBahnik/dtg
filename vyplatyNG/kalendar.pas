@@ -24,9 +24,11 @@ type
 
 var
   Form1: TForm1;
-  week: Word = 0; //global variable can be initilized
-  lastYear : Word = 1;
-  lastWeek : Word = 53;
+  week: Word = 1; //global variable can be initialized
+  startWeek : Word = 1;
+  STD_NUM_OF_WEEKS : Word = 52;
+  compareWithYear : Word = 0;
+  isNewYearAfterThu : Boolean = False;
 implementation
 
 uses dtgDM;
@@ -56,18 +58,36 @@ function getDruhDne(den: TDateTime): Integer;
  end;
 // assumes that generation starts at the begining of year i.e. 1.1.YYYY
 function getTyden(den: TDateTime): Integer;
- var
+var
   myYear, myMonth, myDay : Word;
-  begin
-   DecodeDate(den, myYear, myMonth, myDay);
-   //if lastYear = 0 then lastYear := myYear; // start from begining of yaer
-   //if (myYear = lastYear + 1) and (DayOfWeek(den) > 4) or (DayOfWeek(den) = 1)
-   //then lastWeek := 53
-   //else lastWeek := 52;
-   if DayOfWeek(den) = 2 then week := week + 1;
-   if (week = lastWeek) and (DayOfWeek(den) = 2) then week := 1;
-   Result := week;
- end;
+  newYear : TDateTime;
+begin
+  DecodeDate(den, myYear, myMonth, myDay);
+  if (myYear = compareWithYear) then begin
+        if (DayOfWeek(den) = 2) then begin
+              if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
+                    week := 1;
+                    Result := week;
+                  end;
+             week := IfThen(week > STD_NUM_OF_WEEKS, 1, week + 1);
+             Result := week;
+             end else
+               Result := week;
+      end else
+      begin
+        //new year
+        compareWithYear = day.getYear();
+        newYear = EncodeDate(compareWithYear,1,1);
+        isNewYearAfterThu = afterThu(newYear);
+        if (NOT afterThu(day)) OR (dayOfWeek == DayOfWeek.MONDAY)) then week = 1;
+        Result := week;
+     end;
+end;
+
+function afterThu(day : TDateTime) : Boolean
+   begin
+      Result := (DayOfWeek(den)=5) OR (DayOfWeek(den)=6) OR (DayOfWeek(den)=7) OR (DayOfWeek(den)=1);
+   end;
 
 procedure TForm1.AddClick(Sender: TObject);
  var
