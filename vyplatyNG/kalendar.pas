@@ -56,6 +56,12 @@ function getDruhDne(den: TDateTime): Integer;
    end;
    Result := retVal;
  end;
+
+function afterThu(day : TDateTime) : Boolean;
+   begin
+      Result := (DayOfWeek(day)=5) OR (DayOfWeek(day)=6) OR (DayOfWeek(day)=7) OR (DayOfWeek(day)=1);
+   end;
+ 
 // assumes that generation starts at the begining of year i.e. 1.1.YYYY
 function getTyden(den: TDateTime): Integer;
 var
@@ -76,18 +82,13 @@ begin
       end else
       begin
         //new year
-        compareWithYear = myYear;
-        newYear = EncodeDate(compareWithYear,1,1);
-        isNewYearAfterThu = afterThu(newYear);
-        if (NOT afterThu(day)) OR (dayOfWeek == DayOfWeek.MONDAY)) then week = 1;
+        compareWithYear := myYear;
+        newYear := EncodeDate(compareWithYear,1,1);
+        isNewYearAfterThu := afterThu(newYear);
+        if (NOT afterThu(den)) OR (DayOfWeek(den) = 2) then week := 1;
         Result := week;
      end;
 end;
-
-function afterThu(day : TDateTime) : Boolean
-   begin
-      Result := (DayOfWeek(day)=5) OR (DayOfWeek(day)=6) OR (DayOfWeek(day)=7) OR (DayOfWeek(day)=1);
-   end;
 
 procedure TForm1.AddClick(Sender: TObject);
  var
@@ -100,10 +101,10 @@ procedure TForm1.AddClick(Sender: TObject);
    fromDate := fromDateTimePicker.Date;
    numOfDays := Trunc(toDate - fromDate);
    DecodeDate(fromDate, myYear, myMonth, myDay);
-   compareWithYear = myYear;
-   newYear = EncodeDate(compareWithYear,1,1);
-   isNewYearAfterThu = afterThu(newYear);
-   week = startWeek;
+   compareWithYear := myYear;
+   newYear := EncodeDate(compareWithYear,1,1);
+   isNewYearAfterThu := afterThu(newYear);
+   week := startWeek;
  for i := 0 to numOfDays do
       begin
          with dtgDataModule.kalendarTbl do
