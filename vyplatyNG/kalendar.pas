@@ -65,11 +65,11 @@ begin
   DecodeDate(den, myYear, myMonth, myDay);
   if (myYear = compareWithYear) then begin
         if (DayOfWeek(den) = 2) then begin
-              if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
+             if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
                     week := 1;
                     Result := week;
                   end;
-             week := IfThen(week > STD_NUM_OF_WEEKS, 1, week + 1);
+			 if (week > STD_NUM_OF_WEEKS) then week := 1 else week := week + 1;
              Result := week;
              end else
                Result := week;
