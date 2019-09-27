@@ -72,6 +72,7 @@ begin
   if (myYear = compareWithYear) then begin
         if (DayOfWeek(den) = 2) then begin
              if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
+                    //System.out.println( STD_NUM_OF_WEEKS  + " weeks AND new year after thursday (included)  ***** ") this is not entered
                     week := 1;
                     Result := week;
                   end;
