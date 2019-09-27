@@ -76,13 +76,10 @@ begin
   DecodeDate(den, myYear, myMonth, myDay);
   if (myYear = compareWithYear) then begin
         if (DayOfWeek(den) = 2) then begin
-             if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
-                    //WriteLn(Output, STD_NUM_OF_WEEKS  + ' weeks AND new year after thursday (included)  *****');
-                    week := 1;
-                    Result := week;
-                  end;
+             // in the next command else is used, Result inside begin end does not return
+             if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then week := 0;
              if (week > STD_NUM_OF_WEEKS) then week := 1 else week := week + 1;
-             Result := week;
+             Result := week; // reurns value assigned in the last command
              end else
              Result := week;
       end else
