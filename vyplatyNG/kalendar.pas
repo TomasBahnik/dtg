@@ -16,7 +16,6 @@ type
     toDateTimePicker: TDateTimePicker;
     fromDateTimePicker: TDateTimePicker;
     procedure AddClick(Sender: TObject);
-  TAfterThursday = set of Integer;
   private
     { Private declarations }
   public
@@ -30,12 +29,16 @@ var
   STD_NUM_OF_WEEKS : Word = 52;
   compareWithYear : Word = 0;
   isNewYearAfterThu : Boolean = False;
-  AfterThursday : TAfterThursday = [5,6,7,1];
+
 implementation
 
 uses dtgDM;
-
 {$R *.DFM}
+
+type
+   TAfterThursday = set of Byte;
+var
+   AfterThursday : TAfterThursday = [5,6,7,1];
 
 // Druh Dne v kalendari
 // ddDovolena = 1;
@@ -63,7 +66,7 @@ function afterThu(day : TDateTime) : Boolean;
    begin
       Result := (DayOfWeek(day) in AfterThursday);
    end;
- 
+
 // assumes that generation starts at the begining of year i.e. 1.1.YYYY
 function getTyden(den: TDateTime): Integer;
 var
@@ -74,14 +77,14 @@ begin
   if (myYear = compareWithYear) then begin
         if (DayOfWeek(den) = 2) then begin
              if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
-                    WriteLn(Output, STD_NUM_OF_WEEKS  + ' weeks AND new year after thursday (included)  *****');
+                    //WriteLn(Output, STD_NUM_OF_WEEKS  + ' weeks AND new year after thursday (included)  *****');
                     week := 1;
                     Result := week;
                   end;
-			 if (week > STD_NUM_OF_WEEKS) then week := 1 else week := week + 1;
+             if (week > STD_NUM_OF_WEEKS) then week := 1 else week := week + 1;
              Result := week;
              end else
-               Result := week;
+             Result := week;
       end else
       begin
         //new year
