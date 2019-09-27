@@ -16,6 +16,7 @@ type
     toDateTimePicker: TDateTimePicker;
     fromDateTimePicker: TDateTimePicker;
     procedure AddClick(Sender: TObject);
+  TAfterThursday = set of Integer;
   private
     { Private declarations }
   public
@@ -29,6 +30,7 @@ var
   STD_NUM_OF_WEEKS : Word = 52;
   compareWithYear : Word = 0;
   isNewYearAfterThu : Boolean = False;
+  AfterThursday : TAfterThursday = [5,6,7,1];
 implementation
 
 uses dtgDM;
@@ -59,7 +61,7 @@ function getDruhDne(den: TDateTime): Integer;
 
 function afterThu(day : TDateTime) : Boolean;
    begin
-      Result := (DayOfWeek(day)=5) OR (DayOfWeek(day)=6) OR (DayOfWeek(day)=7) OR (DayOfWeek(day)=1);
+      Result := (DayOfWeek(day) in AfterThursday);
    end;
  
 // assumes that generation starts at the begining of year i.e. 1.1.YYYY
@@ -72,7 +74,7 @@ begin
   if (myYear = compareWithYear) then begin
         if (DayOfWeek(den) = 2) then begin
              if (week = STD_NUM_OF_WEEKS) AND (isNewYearAfterThu) then begin
-                    //System.out.println( STD_NUM_OF_WEEKS  + " weeks AND new year after thursday (included)  ***** ") this is not entered
+                    WriteLn(Output, STD_NUM_OF_WEEKS  + ' weeks AND new year after thursday (included)  *****');
                     week := 1;
                     Result := week;
                   end;
