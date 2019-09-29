@@ -12,7 +12,7 @@ public class Weeks {
     private int week = 1;
     private int startWeek = 1;
     private static LocalDate startDate = LocalDate.of(2020, 1, 1);
-    private static LocalDate endDate = LocalDate.of(2031, 1, 2);
+    private static LocalDate endDate = LocalDate.of(2071, 1, 1);
 
 
     private int getWeekOfDay(LocalDate day) {
